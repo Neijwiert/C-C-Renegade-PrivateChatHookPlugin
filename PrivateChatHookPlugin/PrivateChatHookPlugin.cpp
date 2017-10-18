@@ -318,6 +318,7 @@ bool PrivateChatHookPlugin::DetermineVersion()
 		return true;
 	}
 
+	bool ret = false;
 	this->isDragonadeServer = (GetModuleHandleW(DA_MODULE_NAME) != NULL);
 
 	if (this->isDragonadeServer)
@@ -328,49 +329,53 @@ bool PrivateChatHookPlugin::DetermineVersion()
 			if (scriptsModuleHash.Compare(DA_4_50_SCRIPTS_MD5_HASH) == 0)
 			{
 				this->scriptsVersion = SCRIPTS_VERSION_DA_1_92;
+				ret = true;
 			}
 			else if (scriptsModuleHash.Compare(DA_4_30_SCRIPTS_MD5_HASH) == 0)
 			{
 				this->scriptsVersion = SCRIPTS_VERSION_DA_1_90;
+				ret = true;
 			}
 			else if (scriptsModuleHash.Compare(DA_4_2_4_SCRIPTS_MD5_HASH) == 0)
 			{
 				this->scriptsVersion = SCRIPTS_VERSION_DA_1_8_1;
+				ret = true;
 			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			return false;
 		}
 
-
-		StringClass daModuleHash;
-		if (GetModuleMD5Hash(DA_MODULE_NAME, daModuleHash))
+		if (!ret)
 		{
-			if (daModuleHash.Compare(DA_1_92_DA_MD5_HASH) == 0)
-			{
-				this->daVersion = DA_VERSION_DA_1_92;
-			}
-			else if (daModuleHash.Compare(DA_1_90_DA_MD5_HASH) == 0)
-			{
-				this->daVersion = DA_VERSION_DA_1_90;
-			}
-			else if (daModuleHash.Compare(DA_1_8_1_DA_MD5_HASH) == 0)
-			{
-				this->daVersion = DA_VERSION_DA_1_8_1;
-			}
-			else
-			{
-				return false;
-			}
+			ret = (ChatHookEventVectorAddress != 0);
 		}
-		else
+
+		if (ret)
 		{
-			return false;
+			ret = false;
+
+			StringClass daModuleHash;
+			if (GetModuleMD5Hash(DA_MODULE_NAME, daModuleHash))
+			{
+				if (daModuleHash.Compare(DA_1_92_DA_MD5_HASH) == 0)
+				{
+					this->daVersion = DA_VERSION_DA_1_92;
+					ret = true;
+				}
+				else if (daModuleHash.Compare(DA_1_90_DA_MD5_HASH) == 0)
+				{
+					this->daVersion = DA_VERSION_DA_1_90;
+					ret = true;
+				}
+				else if (daModuleHash.Compare(DA_1_8_1_DA_MD5_HASH) == 0)
+				{
+					this->daVersion = DA_VERSION_DA_1_8_1;
+					ret = true;
+				}
+			}
+
+			if (!ret)
+			{
+				ret = (ChatEventAddress != 0);
+			}
 		}
 	}
 	else
@@ -381,62 +386,69 @@ bool PrivateChatHookPlugin::DetermineVersion()
 			if (scriptsModuleHash.Compare(VANILLA_4_50_SCRIPTS_MD5_HASH) == 0)
 			{
 				this->scriptsVersion = SCRIPTS_VERSION_VANILLA_4_50;
+				ret = true;
 			}
 			else if (scriptsModuleHash.Compare(VANILLA_4_40_SCRIPTS_MD5_HASH) == 0)
 			{
 				this->scriptsVersion = SCRIPTS_VERSION_VANILLA_4_40;
+				ret = true;
 			}
 			else if (scriptsModuleHash.Compare(VANILLA_4_30_SCRIPTS_MD5_HASH) == 0)
 			{
 				this->scriptsVersion = SCRIPTS_VERSION_VANILLA_4_30;
+				ret = true;
 			}
 			else if (scriptsModuleHash.Compare(VANILLA_4_2_4_SCRIPTS_MD5_HASH) == 0)
 			{
 				this->scriptsVersion = SCRIPTS_VERSION_VANILLA_4_2_4;
+				ret = true;
 			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			return false;
 		}
 
-		StringClass bandTestModuleHash;
-		if (GetModuleMD5Hash(BANDTEST_MODULE_NAME, bandTestModuleHash))
+		if (!ret)
 		{
-			if (bandTestModuleHash.Compare(VANILLA_4_50_BANDTEST_MD5_HASH) == 0)
-			{
-				this->bandTestVersion = BANDTEST_VERSION_VANILLA_4_50;
-			}
-			else if (bandTestModuleHash.Compare(VANILLA_4_40_BANDTEST_MD5_HASH) == 0)
-			{
-				this->bandTestVersion = BANDTEST_VERSION_VANILLA_4_40;
-			}
-			else if (bandTestModuleHash.Compare(VANILLA_4_30_BANDTEST_MD5_HASH) == 0)
-			{
-				this->bandTestVersion = BANDTEST_VERSION_VANILLA_4_30;
-			}
-			else if (bandTestModuleHash.Compare(VANILLA_4_2_4_BANDTEST_MD5_HASH) == 0)
-			{
-				this->bandTestVersion = BANDTEST_VERSION_VANILLA_4_2_4;
-			}
-			else
-			{
-				return false;
-			}
+			ret = (ChatHookEventVectorAddress != 0);
 		}
-		else
+
+		if (ret)
 		{
-			return false;
+			ret = false;
+
+			StringClass bandTestModuleHash;
+			if (GetModuleMD5Hash(BANDTEST_MODULE_NAME, bandTestModuleHash))
+			{
+				if (bandTestModuleHash.Compare(VANILLA_4_50_BANDTEST_MD5_HASH) == 0)
+				{
+					this->bandTestVersion = BANDTEST_VERSION_VANILLA_4_50;
+					ret = true;
+				}
+				else if (bandTestModuleHash.Compare(VANILLA_4_40_BANDTEST_MD5_HASH) == 0)
+				{
+					this->bandTestVersion = BANDTEST_VERSION_VANILLA_4_40;
+					ret = true;
+				}
+				else if (bandTestModuleHash.Compare(VANILLA_4_30_BANDTEST_MD5_HASH) == 0)
+				{
+					this->bandTestVersion = BANDTEST_VERSION_VANILLA_4_30;
+					ret = true;
+				}
+				else if (bandTestModuleHash.Compare(VANILLA_4_2_4_BANDTEST_MD5_HASH) == 0)
+				{
+					this->bandTestVersion = BANDTEST_VERSION_VANILLA_4_2_4;
+					ret = true;
+				}
+			}
+
+			if (!ret)
+			{
+				ret = (ChatEventAddress != 0);
+			}
 		}
 	}
 
 	this->checkedVersion = true;
 
-	return true;
+	return ret;
 }
 
 bool PrivateChatHookPlugin::HookChat()
